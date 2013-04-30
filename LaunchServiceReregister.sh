@@ -15,7 +15,7 @@ if [ "Darwin" != `uname` ] ; then
 fi
 
 # LaunchServiceの登録し直し。
-/System/Library/Frameworks/CoreServices.framework//Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user
+/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user
 
 # Finder再起動
 killall Finder

@@ -18,11 +18,19 @@ Behaviors= {
     },
 
     "apache2-access.log"=> lambda{
-        system "cat /var/log/apache2/access_log"
+        if "Darwin" == `uname` then
+            system "find /private/var/log/apache2 -type f -regex \".*access.*log$\" -exec cat {} \\;"
+        else
+            system "find /var/log/apache2 -type f -regex \".*access.*log$\" -exec cat {} \\;"
+        end
     },
 
     "apache2-error.log"=> lambda{
-        system "cat /var/log/apache2/error_log"
+        if "Darwin" == `uname` then
+            system "find /private/var/log/apache2 -type f -regex \".*error.*log$\" -exec cat {} \\;"
+        else
+            system "find /var/log/apache2 -type f -regex \".*error.*log$\" -exec cat {} \\;"
+        end
     },
     
 } # ~Behaviors

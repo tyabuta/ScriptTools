@@ -21,13 +21,19 @@ if "" == archive then
     exit 1
 end
 
+# tar.gzファイルの場合
+if archive =~ /(.*)\.tar\.gz$/i then
+    if "" == output then
+        output = $1
+    end
+    system "tar zxvf #{archive}"
+
 # .gzファイルの場合
-if archive =~ /(.*)\.gz$/i then
+elsif archive =~ /(.*)\.gz$/i then
     if "" == output then
         output = $1
     end
     system "gzip -cd #{archive} > #{output}"
-
 # どれにも該当しないファイルの場合
 else
     puts "failed."

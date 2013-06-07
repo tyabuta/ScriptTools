@@ -1,22 +1,21 @@
 #!/usr/bin/env ruby
-#####################################################################
-# 1.1.0.5
+# *******************************************************************
 #
 #              各種スクリプトのHelloWorldを作成する。
 #
 #                                                  (c) 2013 tyabuta.
-#####################################################################
+# *******************************************************************
 
+# __Func__
 
-
-#
+# -------------------------------------------------------------------
 # 正規表現にマッチした行をきっかけに、次の行からファイル読み込みを開始する。
 #
 # file_object: ファイルオブジェクト
 # regex_begin: 読み込みのきっかけとなる正規表現
 #   regex_end: 読み込み終了の合図となる正規表現、
 #              省略した場合はファイルの最後まで読み込みを行う。
-#
+# -------------------------------------------------------------------
 def ReadBeginWithLine(file_object, regex_begin, regex_end=nil)
     buf = ""
     while file_object.gets
@@ -32,13 +31,35 @@ def ReadBeginWithLine(file_object, regex_begin, regex_end=nil)
     return buf
 end
 
-
-
-
-
 # -------------------------------------------------------------------
-# Main
+# プロンプトによる項目の選択関数
+#           arr: 選択項目となる文字列配列
+#           msg: 選択を促す、メッセージ文字列
+# returnByIndex: インデックスで選択項目を返すか。
+#                true (default) -> 選択された項目のインデックスを返します。
+#                                  Cancelが選択された場合 -1
+#                false          -> 選択された項目の文字列を返します。
+#                                  Cancelが選択された場合 nil
 # -------------------------------------------------------------------
+def PromptSelectMenuWithArray(arr, msg, returnByIndex = true)
+    puts msg
+    puts "0) cancel"
+    arr.each_with_index { |a, i| puts "#{i+1}) #{a}" }
+
+    # 入力を求める。
+    print ">> "; idx = gets.to_i() -1
+
+    # インデックス指定の場合、数値を返す。
+    return idx if returnByIndex
+
+    # インデックス指定でない場合、無効値はnilを返す。
+    return nil if -1 == idx
+    return arr[idx]
+end
+
+
+
+# __Main__
 
 SCRIPT_TYPES = {
     "ruby"  => ".rb",
@@ -46,18 +67,27 @@ SCRIPT_TYPES = {
     "shell" => ".sh",
 }
 
+# コマンドライン引数のチェック
+script_type  = ARGV[0] || ""
 
-script_type     = ARGV[0] or abort "スクリプトタイプが指定されていません。"
+# スクリプトタイプが指定されていない場合は、選択させる。
+if "" == script_type then
+    msg = "スクリプトタイプを選択してください。"
+    script_type = PromptSelectMenuWithArray(
+                    SCRIPT_TYPES.keys.sort, msg, false) # <- 項目名を返す
+    abort if nil == script_type # キャンセル時はabort
+end
 
+# スクリプトタイプの整合性チェック
 SCRIPT_TYPES.key?(script_type) or abort "指定されたスクリプトには対応していません。"
+
+
 
 target_filename = "hello"
 target_path     = target_filename + SCRIPT_TYPES[script_type]
 
-
-
 # 各種スクリプトのソースコード読み込み
-src = ReadBeginWithLine(DATA, /^@@#{script_type}/, /^@@/) 
+src = ReadBeginWithLine(DATA, /^@@#{script_type}/, /^@@/)
 
 # スクリプトコードの書き込み
 open(target_path, "w") { |f| f.write src }

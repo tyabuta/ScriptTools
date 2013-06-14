@@ -21,8 +21,8 @@ if "" == archive then
     exit 1
 end
 
-# tar.gzファイルの場合
-if archive =~ /(.*)\.tar\.gz$/i then
+# tar.gz | .tgz ファイルの場合
+if archive =~ /(.*)\.(tar\.gz|tgz)$/i then
     if "" == output then
         output = $1
     end

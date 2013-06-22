@@ -6,11 +6,9 @@
 #                                                   (c) 2013 tyabuta.
 # ********************************************************************
 
-# __Func__
-
-#
+# -------------------------------------------------------------------
 # 指定ファイルに文字列を追記する。
-#
+# -------------------------------------------------------------------
 def FileWriteAppend(filename, str)
     open(filename, "a") do |f|
         f.write str
@@ -19,9 +17,9 @@ def FileWriteAppend(filename, str)
     return false
 end
 
-#
+# -------------------------------------------------------------------
 # Data構造処理用の関数
-#
+# -------------------------------------------------------------------
 def AppendData(data)
     ret = FileWriteAppend(data[:filename], data[:text])
     if ret then
@@ -40,6 +38,10 @@ DATA = [
 .DS_Store
 project.xcworkspace/
 xcuserdata/
+
+# for Symfony
+app/cache/*
+app/logs/*
 EOF
 },
 
@@ -52,7 +54,6 @@ EOF
 EOF
 },
 ] # End of DATA
-
 
 
 # git init --------------------------------------

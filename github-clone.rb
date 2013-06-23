@@ -94,7 +94,7 @@ puts "リポジトリデータの取得中... "
 json = GitHubUserRepositories("tyabuta")
 if nil == json then
     puts "取得に失敗しました！"
-    exit -1
+    exit(-1)
 end
 puts "取得完了。"
 

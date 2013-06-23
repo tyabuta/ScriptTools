@@ -39,16 +39,15 @@ def PromptSelectMenuWithArray(arr, msg, returnByIndex = true)
     return arr[idx]
 end
 
-
 # -------------------------------------------------------------------
-# GitHubから、ユーザーのリポジトリ一覧を取得する。
+# GitHubから、ユーザーのリポジトリ一覧をJSON形式で取得する。
 # ※GitHub APIを利用。
 # レスポンスヘッダが200を返さなかった場合には、
 # 取得失敗としてnilを返します。
 #
 # username: GitHubのユーザー名
 # -------------------------------------------------------------------
-def GitHubUserReposirories(username)
+def GitHubUserRepositories(username)
     # GitHub API
     url = "https://api.github.com/users/" + username + "/repos"
 
@@ -92,7 +91,7 @@ end
 
 # リポジトリ情報の取得
 puts "リポジトリデータの取得中... "
-json = GitHubUserReposirories("tyabuta")
+json = GitHubUserRepositories("tyabuta")
 if nil == json then
     puts "取得に失敗しました！"
     exit -1

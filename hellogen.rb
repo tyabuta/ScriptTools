@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# encoding: utf-8
+
 # *******************************************************************
 #
 #              各種スクリプトのHelloWorldを作成する。
@@ -109,6 +111,7 @@ __END__
 
 @@ruby
 #!/usr/bin/env ruby
+# encoding: utf-8
 
 puts "Hello Ruby!"
 

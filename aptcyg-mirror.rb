@@ -102,8 +102,8 @@ end
 
 
 # 選択プロンプト
-mesasge        = '使用するリポジトリを選択してください。'
-selected_index = PromptSelectMenuWithArray(selectable_items, mesasge)
+message        = '使用するリポジトリを選択してください。'
+selected_index = PromptSelectMenuWithArray(selectable_items, message)
 if -1 != selected_index then
     # リポジトリの設定を実行
     ret = system("apt-cyg -m #{ repos[selected_index]['url'] } update")

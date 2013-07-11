@@ -1,12 +1,22 @@
 #!/usr/bin/env ruby
 # encoding: utf-8
-
 # *******************************************************************
 #
 #              各種スクリプトのHelloWorldを作成する。
 #
 #                                                  (c) 2013 tyabuta.
 # *******************************************************************
+
+# ___Const__
+
+SCRIPT_TYPES = {
+    "ruby"  => ".rb",
+    "php"   => ".php",
+    "perl"  => ".pl",
+    "shell" => ".sh",
+}
+
+
 
 # __Func__
 
@@ -38,10 +48,12 @@ end
 #           arr: 選択項目となる文字列配列
 #           msg: 選択を促す、メッセージ文字列
 # returnByIndex: インデックスで選択項目を返すか。
-#                true (default) -> 選択された項目のインデックスを返します。
-#                                  Cancelが選択された場合 -1
-#                false          -> 選択された項目の文字列を返します。
-#                                  Cancelが選択された場合 nil
+#                true (default)
+#                    選択された項目のインデックスを返します。
+#                    Cancel、または無効値が選択された場合 -1
+#                false
+#                    選択された項目の文字列を返します。
+#                    Cancel、または無効値が選択された場合 nil
 # -------------------------------------------------------------------
 def PromptSelectMenuWithArray(arr, msg, returnByIndex = true)
     puts msg
@@ -50,6 +62,11 @@ def PromptSelectMenuWithArray(arr, msg, returnByIndex = true)
 
     # 入力を求める。
     print ">> "; idx = gets.to_i() -1
+
+    # 無効値の場合は全て-1に統一する。
+    if idx < 0 || arr.count < idx + 1 then
+        idx = -1
+    end
 
     # インデックス指定の場合、数値を返す。
     return idx if returnByIndex
@@ -62,12 +79,6 @@ end
 
 
 # __Main__
-
-SCRIPT_TYPES = {
-    "ruby"  => ".rb",
-    "perl"  => ".pl",
-    "shell" => ".sh",
-}
 
 # コマンドライン引数のチェック
 script_type  = ARGV[0] || ""
@@ -114,6 +125,13 @@ __END__
 # encoding: utf-8
 
 puts "Hello Ruby!"
+
+
+@@php
+#!/usr/bin/env php
+<?php
+
+print 'Hello PHP!' . "\n";
 
 
 @@perl

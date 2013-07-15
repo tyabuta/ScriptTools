@@ -26,7 +26,7 @@ def getCommandList(dir)
     arr = []
 
     # 実行権限が付与された、コマンド名を列挙する。
-    res = `find #{dir} -type f -perm -111 -depth 1 -exec basename {} \\;`
+    res = `find #{dir} -maxdepth 1 -type f -perm -111 -exec basename {} \\;`
     res.each_line do |a|
         a.chomp!
         arr.push(a)

@@ -35,6 +35,9 @@ Listen 10080
     ErrorLog     "#{pwd}/#{app}/logs/error.log"
     CustomLog    "#{pwd}/#{app}/logs/access.log" common
 
+    # リリース時にはコメントアウトしておく事。
+    SetEnv APPLICATION_ENV development
+
     <Directory "#{pwd}/#{app}/public">
         Options Indexes FollowSymLinks MultiViews ExecCGI
         AllowOverride All

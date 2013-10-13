@@ -10,10 +10,11 @@
 # ___Const__
 
 SCRIPT_TYPES = {
-    "ruby"  => ".rb",
-    "php"   => ".php",
-    "perl"  => ".pl",
-    "shell" => ".sh",
+    "ruby"    => ".rb",
+    "php"     => ".php",
+    "perl"    => ".pl",
+    "shell"   => ".sh",
+    "python3" => ".py",
 }
 
 
@@ -148,4 +149,9 @@ print "Hello Perl!\n";
 
 echo "Hello ShellScript!"
 
+
+@@python3
+#!/usr/bin/env python3
+
+print("Hello Python3!")
 

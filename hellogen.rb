@@ -14,7 +14,7 @@ SCRIPT_TYPES = {
     "php"     => ".php",
     "perl"    => ".pl",
     "shell"   => ".sh",
-    "python3" => ".py",
+    "python"  => ".py",
 }
 
 
@@ -150,8 +150,11 @@ print "Hello Perl!\n";
 echo "Hello ShellScript!"
 
 
-@@python3
-#!/usr/bin/env python3
+@@python
+#!/usr/bin/env python
+# -*- coding utf-8 -*-
 
-print("Hello Python3!")
+print("Hello Python!")
+
+
 

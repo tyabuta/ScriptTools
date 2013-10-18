@@ -152,9 +152,11 @@ echo "Hello ShellScript!"
 
 @@python
 #!/usr/bin/env python
-# -*- coding utf-8 -*-
+# _*_ coding: utf-8 _*_
 
-print("Hello Python!")
+
+if "__main__" == __name__ :
+    print("Hello Python!")
 
 
 

@@ -22,9 +22,9 @@ CONF_PATH = '~/.sshlogin.yml'
 
 # 設定ファイルのテンプレート
 CONF_TEMPLATE = <<"EOF"
--  server: ServerName1
+- server: ServerName1
   command: ssh User@host1
--  server: ServerName2
+- server: ServerName2
   command: ssh User@host2 -p 22 -i ~/.ssh/id_rsa
 EOF
 

@@ -10,11 +10,12 @@
 # ___Const__
 
 SCRIPT_TYPES = {
-    "ruby"    => ".rb",
-    "php"     => ".php",
-    "perl"    => ".pl",
-    "shell"   => ".sh",
-    "python"  => ".py",
+    'ruby'    => '.rb',
+    'php'     => '.php',
+    'perl'    => '.pl',
+    'shell'   => '.sh',
+    'python'  => '.py',
+    'html'    => '.html',
 }
 
 
@@ -107,13 +108,16 @@ src = ReadBeginWithLine(DATA, /^@@#{script_type}/, /^@@/)
 open(target_path, "w") { |f| f.write src }
 puts "[write] " + File.expand_path(target_path)
 
-# 権限変更(chmod)
-system("chmod 755 #{target_path}")
-puts "[chmod] 755 #{target_path}"
+if 'html' != script_type then
+    # 権限変更(chmod)
+    system("chmod 755 #{target_path}")
+    puts "[chmod] 755 #{target_path}"
 
-# HelloWorld実行
-print "./#{target_path} >>> "
-system("./#{target_path}") or abort "スクリプト実行失敗"
+    # HelloWorld実行
+    print "./#{target_path} >>> "
+    system("./#{target_path}") or abort "スクリプト実行失敗"
+end
+
 
 exit 0
 
@@ -157,6 +161,33 @@ echo "Hello ShellScript!"
 
 if "__main__" == __name__ :
     print("Hello Python!")
+
+@@html
+<!DOCTYPE>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>HelloWorld</title>
+<link href="http://szk-engineering.com/markdown.css" rel="stylesheet"></link>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+</head>
+<body class="gray-gradient-backgroud">
+<!------------------------------------------------------------------->
+<h1>- Hello World! -</h1>
+
+
+
+<!------------------------------------------------------------------->
+
+<script>
+$(function(){
+	// TODO:
+});
+</script>
+
+<!------------------------------------------------------------------->
+</body>
+</html>
 
 
 

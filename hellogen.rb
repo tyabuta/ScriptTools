@@ -166,12 +166,12 @@ if "__main__" == __name__ :
 <!DOCTYPE>
 <html lang="ja">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>HelloWorld</title>
 <link href="http://szk-engineering.com/markdown.css" rel="stylesheet"></link>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 </head>
-<body class="gray-gradient-backgroud">
+<body>
 <!------------------------------------------------------------------->
 <h1>- Hello World! -</h1>
 

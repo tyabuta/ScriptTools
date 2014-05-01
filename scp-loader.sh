@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
+# 設定変数
+yamlPath="$HOME/.scp-loader.yml"
+rsaKey=''
+host=''
+remoteDir=''
+
 
 # -----------------------------------------------
 # functions
 # -----------------------------------------------
 
 function upload(){
+    loadConfig
+
     if [ -f "$file" ]; then
         scp -i $rsaKey $file $host:$remoteDir
     elif [ -d "$file" ]; then
@@ -17,6 +25,8 @@ function upload(){
 }
 
 function download(){
+    loadConfig
+
     if [ "/" = `echo $file | cut -c ${#file}-${#file}` ]; then
         scp -i $rsaKey -r $host:$file ./
     else
@@ -24,7 +34,15 @@ function download(){
     fi
 }
 
+function loadConfig(){
+    rsaKey=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['rsa-key']"`
+    host=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['host']"`
+    remoteDir=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['remote-dir']"`
+}
 
+function usage(){
+    echo "usage: <-u | -d> ${0##*/} <File | Directory>"
+}
 
 # -----------------------------------------------
 # main
@@ -40,34 +58,22 @@ done
 shift $(($OPTIND - 1))
 
 
-if [ "true" = "$uploadFlag" -a "true" = "$downloadFlag" ]; then
-    echo "usage: <-u|-d> ${0##*/} <File|Directory>"
-    exit 1
-
-elif [ "true" != "$uploadFlag" -a "true" != "$downloadFlag" ]; then
-    echo "usage: <-u|-d> ${0##*/} <File|Directory>"
-    exit 1
+# オプション指定が不正な場合
+if [ "true" = "$uploadFlag" -a "true" = "$downloadFlag" ] || [ "true" != "$uploadFlag" -a "true" != "$downloadFlag" ]; then
+    usage; exit 1
 fi
 
-# 指定ファイルPATH
+# ファイル指定が無い場合
 file=$1
 if [ -z "$file" ]; then
-    echo "usage: <-u|-d> ${0##*/} <File|Directory>"
-    exit 1
+    usage; exit 1
 fi
 
-
-# 設定ファイルの存在確認
-yamlPath="$HOME/.scp-loader.yml"
+# yamlファイルの存在確認
 if [ ! -e "$yamlPath" ]; then
     echo "$yamlPath is not exists."
     exit 1
 fi
-
-# 設定読み込み
-rsaKey=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['rsa-key']"`
-host=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['host']"`
-remoteDir=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['remote-dir']"`
 
 if [ "true" = "$uploadFlag" ]; then
     upload

@@ -16,25 +16,24 @@ function upload(){
     loadConfig
     [ true = "$dryRunFlag" ] && return 0
 
-    if [ -f "$file" ]; then
-        scp -i $rsaKey $file $host:$remoteDir
-    elif [ -d "$file" ]; then
-        scp -i $rsaKey -r $file $host:$remoteDir
-    else
-        echo "無効なファイルです"
-        return 1
+    local recursivelyCopyOption=''
+    if   [   -d "$file" ]; then recursivelyCopyOption='-r'
+    elif [ ! -f "$file" ]; then echo "$file is not exists."; return 1
     fi
+
+    scp -i $rsaKey $recursivelyCopyOption $file $host:$remoteDir
 }
 
 function download(){
     loadConfig
     [ true = "$dryRunFlag" ] && return 0
 
+    local recursivelyCopyOption=''
     if [ "/" = `echo $file | cut -c ${#file}-${#file}` ]; then
-        scp -i $rsaKey -r $host:$file ./
-    else
-        scp -i $rsaKey $host:$file ./
+        recursivelyCopyOption='-r'
     fi
+
+    scp -i $rsaKey $recursivelyCopyOption $host:$file ./
 }
 
 function loadConfig(){

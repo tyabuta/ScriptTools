@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # 設定変数
+dryRunFlag=false
 yamlPath="$HOME/.scp-loader.yml"
 rsaKey=''
 host=''
@@ -13,6 +14,7 @@ remoteDir=''
 
 function upload(){
     loadConfig
+    [ true = "$dryRunFlag" ] && return 0
 
     if [ -f "$file" ]; then
         scp -i $rsaKey $file $host:$remoteDir
@@ -26,6 +28,7 @@ function upload(){
 
 function download(){
     loadConfig
+    [ true = "$dryRunFlag" ] && return 0
 
     if [ "/" = `echo $file | cut -c ${#file}-${#file}` ]; then
         scp -i $rsaKey -r $host:$file ./
@@ -49,8 +52,9 @@ function usage(){
 # -----------------------------------------------
 
 # オプション解析
-while getopts "ud" flag; do
+while getopts 'udn' flag; do
     case $flag in
+        n) dryRunFlag=true;;
         u) uploadFlag=true;;
         d) downloadFlag=true;;
     esac
@@ -59,7 +63,7 @@ shift $(($OPTIND - 1))
 
 
 # オプション指定が不正な場合
-if [ "true" = "$uploadFlag" -a "true" = "$downloadFlag" ] || [ "true" != "$uploadFlag" -a "true" != "$downloadFlag" ]; then
+if [ true = "$uploadFlag" -a true = "$downloadFlag" ] || [ true != "$uploadFlag" -a true != "$downloadFlag" ]; then
     usage; exit 1
 fi
 
@@ -75,9 +79,7 @@ if [ ! -e "$yamlPath" ]; then
     exit 1
 fi
 
-if [ "true" = "$uploadFlag" ]; then
-    upload
-elif [ "true" = "$downloadFlag" ]; then
-    download
+if   [ true = "$uploadFlag" ];   then upload
+elif [ true = "$downloadFlag" ]; then download
 fi
 

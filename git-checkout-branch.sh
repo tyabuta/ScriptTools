@@ -12,7 +12,8 @@ curretBranch=$(git branch | awk '/^\* .+/ { print $2 }')
 # ローカルブランチを取得
 branches=$(git branch --column | sed -e 's/\*//g')
 
-echo "切り替えるブランチを選んでください (on branch ${curretBranch})"
+
+echo "切り替えるブランチを選んでください (on branch $(tput setaf 2)${curretBranch}$(tput sgr 0))"
 PS3='>>> '
 select branch in $branches; do
     [ -z "$branch" ] && exit 0

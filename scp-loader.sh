@@ -42,6 +42,14 @@ function loadConfig(){
     remoteDir=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['remote-dir']"`
 }
 
+function outputYamlSkeleton(){
+    cat <<YAML
+host: UserName@123.0.0.1
+remote-dir: scp-dir/
+rsa-key: path/to/rsa-key
+YAML
+}
+
 function usage(){
     echo "usage: <-u | -d> ${0##*/} <File | Directory>"
 }
@@ -51,14 +59,17 @@ function usage(){
 # -----------------------------------------------
 
 # オプション解析
-while getopts 'udn' flag; do
-    case $flag in
-        n) dryRunFlag=true;;
-        u) uploadFlag=true;;
-        d) downloadFlag=true;;
+while :; do
+    case "$1" in
+    -h | --help | -\?)    usage;              exit 0;;
+    -s | --yaml-skeleton) outputYamlSkeleton; exit 0;;
+    -n) dryRunFlag=true;   shift;;
+    -u) uploadFlag=true;   shift;;
+    -d) downloadFlag=true; shift;;
+    -*) printf >&2 "WARN: Unknown option (ignored) %s\n" "$1"; shift;;
+    *) break;;
     esac
 done
-shift $(($OPTIND - 1))
 
 
 # オプション指定が不正な場合

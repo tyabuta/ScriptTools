@@ -51,7 +51,7 @@ YAML
 }
 
 function usage(){
-    echo "usage: <-u | -d> ${0##*/} <File | Directory>"
+    echo "usage: ${0##*/} [-n] [--yaml-skeleton | -s] <-u | -d> <File | Directory>"
 }
 
 # -----------------------------------------------

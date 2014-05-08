@@ -2,10 +2,9 @@
 
 # 設定変数
 dryRunFlag=false
-yamlPath="$HOME/.scp-loader.yml"
-rsaKey=''
-host=''
-remoteDir=''
+
+confPath="$HOME/.scp-loader"
+[ -f "$confPath" ] && source $confPath
 
 
 # -----------------------------------------------
@@ -13,7 +12,6 @@ remoteDir=''
 # -----------------------------------------------
 
 function upload(){
-    loadConfig
     [ true = "$dryRunFlag" ] && return 0
 
     local recursivelyCopyOption=''
@@ -21,11 +19,10 @@ function upload(){
     elif [ ! -f "$file" ]; then echo "$file is not exists."; return 1
     fi
 
-    scp -i $rsaKey $recursivelyCopyOption $file $host:$remoteDir
+    scp -i $RSA_KEY $recursivelyCopyOption $file $HOST:$REMOTE_DIR
 }
 
 function download(){
-    loadConfig
     [ true = "$dryRunFlag" ] && return 0
 
     local recursivelyCopyOption=''
@@ -33,25 +30,19 @@ function download(){
         recursivelyCopyOption='-r'
     fi
 
-    scp -i $rsaKey $recursivelyCopyOption $host:$file ./
+    scp -i $RSA_KEY $recursivelyCopyOption $HOST:$file ./
 }
 
-function loadConfig(){
-    rsaKey=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['rsa-key']"`
-    host=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['host']"`
-    remoteDir=`ruby -r yaml -e "puts YAML.load(open('$yamlPath').read)['remote-dir']"`
-}
-
-function outputYamlSkeleton(){
-    cat <<YAML
-host: UserName@123.0.0.1
-remote-dir: scp-dir/
-rsa-key: path/to/rsa-key
-YAML
+function outputConfSkeleton(){
+    cat <<CONF
+HOST=user@123.0.0.1
+REMOTE_DIR=scp-dir/
+RSA_KEY=/path/to/rsa-key
+CONF
 }
 
 function usage(){
-    echo "usage: ${0##*/} [-n] [--yaml-skeleton | -s] <-u | -d> <File | Directory>"
+    echo "usage: ${0##*/} [-n] [--conf-skeleton | -s] <-u | -d> <File | Directory>"
 }
 
 # -----------------------------------------------
@@ -62,7 +53,7 @@ function usage(){
 while :; do
     case "$1" in
     -h | --help | -\?)    usage;              exit 0;;
-    -s | --yaml-skeleton) outputYamlSkeleton; exit 0;;
+    -s | --conf-skeleton) outputConfSkeleton; exit 0;;
     -n) dryRunFlag=true;   shift;;
     -u) uploadFlag=true;   shift;;
     -d) downloadFlag=true; shift;;
@@ -81,12 +72,6 @@ fi
 file=$1
 if [ -z "$file" ]; then
     usage; exit 1
-fi
-
-# yamlファイルの存在確認
-if [ ! -e "$yamlPath" ]; then
-    echo "$yamlPath is not exists."
-    exit 1
 fi
 
 if   [ true = "$uploadFlag" ];   then upload

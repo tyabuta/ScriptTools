@@ -7,7 +7,7 @@
 
 
 function usage(){
-    echo "usage: ${0##*/} [-n] [--yaml-skeleton | -s] <-u | -d> <File | Directory>"
+    echo "usage: ${0##*/} [-s | --schema] [-r | --routing] [-a | --action] [-t | --template] <Keyword>"
 }
 
 
@@ -57,7 +57,11 @@ while :; do
     esac
 done
 
+if [ -z "$1" ]; then
+    usage; exit 1
+fi
 
+[ true = "$schemaGrepFlag" ]   && sf-schema-search   $1
 [ true = "$routingGrepFlag" ]  && sf-routing-search  $1
 [ true = "$actionGrepFlag" ]   && sf-action-search   $1
 [ true = "$templateFindFlag" ] && sf-template-search $1

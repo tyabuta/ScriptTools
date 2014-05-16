@@ -49,10 +49,10 @@ EOF
 
 { :filename => ".gitattributes",
    :message => "[write] .gitattributes",
-      :text => <<"EOF"
+      :text => <<'EOF'
 *.ai binary
 *.xib bi
-!*.pbxproj binary
+\!*.pbxproj binary
 EOF
 },
 ] # End of DATA

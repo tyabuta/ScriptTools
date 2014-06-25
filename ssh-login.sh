@@ -24,6 +24,7 @@ select host in $hosts Cancel; do
     *) break;;
     esac
 done
+[ -z "$host" ] && exit 0
 
 # do ssh connection
 ssh $host

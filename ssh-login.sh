@@ -22,7 +22,7 @@ function do_ssh_connection(){
     # read host list
     hosts=$(cat $ssh_config | awk '
     BEGIN { buf=""; }
-    /^\s*[Hh]ost\s+(.*)\s*$/ { buf = buf $2 " ";}
+    /^ *[Hh]ost +(.*)$/ { buf = buf $2 " ";}
     END   { print buf; }
     ')
 

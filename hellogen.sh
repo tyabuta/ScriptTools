@@ -94,7 +94,17 @@ function make_html(){
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>HelloWorld</title>
 <link href="http://szk-engineering.com/markdown.css" rel="stylesheet"></link>
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<!-- jQuery
+jQuery 1.x
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+jQuery 2.x (IE < 9 not supported)
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+-->
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
 </head>
 <body>
 <h1>- Hello World! -</h1>

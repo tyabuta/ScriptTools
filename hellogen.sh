@@ -88,7 +88,7 @@ __SRC__
 function make_html(){
     path="./hello.html"
     cat <<__SRC__ > $path
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -109,6 +109,12 @@ jQuery 2.x (IE < 9 not supported)
 <!-- jQuery-UI -->
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script>
 <link href="http://code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css" rel="stylesheet"></link>
+
+
+<!-- Bootstrap
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+-->
 
 </head>
 <body>

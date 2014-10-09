@@ -17,8 +17,8 @@
 #
 def GitBranchGetCurrent()
     git_status = `git status 2>&1`
-    if git_status =~ /# On branch (.+)$/ then
-        current_branch = $1
+    if git_status =~ /^(|# )On branch (.+)$/ then
+        current_branch = $2
         return current_branch
     end
     return ""

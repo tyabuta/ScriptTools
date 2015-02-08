@@ -6,10 +6,10 @@ import os
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/python-lib')
 import bitbucket
+from Account import Account
 
-
-UNAME = ''
-PASS  = ''
+g_usr = ''
+g_pwd = ''
 
 CLONE_TYPE_SSH   = 1
 CLONE_TYPE_HTTPS = 2
@@ -36,17 +36,17 @@ def choice_clone_type():
 
 def make_repo_url(name, clone_type):
     if CLONE_TYPE_SSH == clone_type:
-        return 'git@bitbucket.org:%s/%s.git' % (UNAME, name)
+        return 'git@bitbucket.org:%s/%s.git' % (g_usr, name)
     elif CLONE_TYPE_HTTPS ==clone_type:
-        return 'https://%s@bitbucket.org/%s/%s.git' % (UNAME, UNAME, name)
+        return 'https://%s@bitbucket.org/%s/%s.git' % (g_usr, g_usr, name)
     return ''
 
 
 def choice_repository():
     print 'Select repositories'
     arr = []
-    bb  = bitbucket.BitBucket(UNAME,PASS)
-    for repo in bb.user(UNAME).repositories():
+    bb  = bitbucket.BitBucket(g_usr,g_pwd)
+    for repo in bb.user(g_usr).repositories():
         name = repo['name']
         arr.append(name)
         print '%d) %s' % (len(arr), name)
@@ -59,10 +59,14 @@ def choice_repository():
 
 
 
+
+account = Account('~/.bitbacketpw')
+g_usr,g_pwd = account.get();
+
+
 repo = choice_repository()
 if '' != repo:
     type = choice_clone_type()
     if CLONE_TYPE_SSH == type or CLONE_TYPE_HTTPS == type:
         git_clone(make_repo_url(repo, type))
-
 

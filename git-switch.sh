@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # -----------------------------------------------
-#
-#      branchの切り替えをlocalから選択する
-#
+#      branchの切り替えを選択できる
 # -----------------------------------------------
 
+function usage(){
+    echo "usage: ${0##*/} [-r]"
+    echo "    -r  Remote branches"
+    exit 1
+}
 
 function color_green(){
     if which tput > /dev/null 2>&1; then
@@ -14,13 +17,45 @@ function color_green(){
     echo "$1"
 }
 
+function get_remote_branches()
+{
+    git branch -r | perl -ne '
+if ($_ =~ /origin\/(.*) ->.*/i){
+     print $1 . "\n";
+}
+elsif ($_ =~ /origin\/(.*)/i){
+     print $1 . "\n";
+}
+'
+}
+
+function get_local_branches()
+{
+    git branch | awk '{buf=sprintf("%s %s ", buf, $0)} END{print buf}' | sed -e 's/\*//g'
+}
+
+
+REMOTE_BRANCH="no"
+while getopts r OPT
+do
+  case $OPT in
+    "r" ) REMOTE_BRANCH="yes" ;;
+      * ) usage ;;
+  esac
+done
+shift $(( $OPTIND - 1 ))
+
 
 # 現在のブランチ取得
 curretBranch=$(git branch | awk '/^\* .+/ { print $2 }')
 [ -z "$curretBranch" ] && exit 1
 
-# ローカルブランチを取得
-branches=$(git branch | awk '{buf=sprintf("%s %s ", buf, $0)} END{print buf}' | sed -e 's/\*//g')
+# ブランチリストを取得
+if [ "yes" == "$REMOTE_BRANCH" ]; then
+    branches=$(get_remote_branches)
+else
+    branches=$(get_local_branches)
+fi
 
 echo "切り替えるブランチを選んでください (on branch $(color_green "$curretBranch"))"
 PS3='>>> '

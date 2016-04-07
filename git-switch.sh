@@ -58,7 +58,8 @@ else
 fi
 
 if which fzf > /dev/null 2>&1; then
-    branch=$(echo "$branches" | fzf)
+    msg="切り替えるブランチを選んでください (on branch $curretBranch)"
+    branch=$(echo "$branches" | fzf --prompt="$msg")
     [ -z "$branch" ] && exit 0
 else
     echo "切り替えるブランチを選んでください (on branch $(color_green "$curretBranch"))"

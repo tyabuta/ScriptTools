@@ -31,7 +31,7 @@ elsif ($_ =~ /origin\/(.*)/i){
 
 function get_local_branches()
 {
-    git branch | awk '{buf=sprintf("%s %s ", buf, $0)} END{print buf}' | sed -e 's/\*//g'
+    git branch | awk '{buf=sprintf("%s\n%s", buf, $0)} END{print buf}' | sed -e 's/\*//g'
 }
 
 
@@ -57,12 +57,17 @@ else
     branches=$(get_local_branches)
 fi
 
-echo "切り替えるブランチを選んでください (on branch $(color_green "$curretBranch"))"
-PS3='>>> '
-select branch in $branches; do
+if which fzf > /dev/null 2>&1; then
+    branch=$(echo "$branches" | fzf)
     [ -z "$branch" ] && exit 0
-    break
-done
+else
+    echo "切り替えるブランチを選んでください (on branch $(color_green "$curretBranch"))"
+    PS3='>>> '
+    select branch in $branches; do
+        [ -z "$branch" ] && exit 0
+        break
+    done
+fi
 
 # checkout
 git checkout $branch

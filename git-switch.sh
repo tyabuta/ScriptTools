@@ -31,7 +31,7 @@ elsif ($_ =~ /origin\/(.*)/i){
 
 function get_local_branches()
 {
-    git branch | awk '{buf=sprintf("%s\n%s", buf, $0)} END{print buf}' | sed -e 's/\*//g'
+    git branch | perl -pe 's/[\* ]//g'
 }
 
 

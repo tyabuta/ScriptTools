@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+ls -1d $GOPATH/src/*/*/* | perl -pe "s|$GOPATH/src/||"
+

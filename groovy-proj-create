@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -u
+
+usage(){
+    echo "groovy-proj-cretae <ProjectName>"
+    exit 1
+}
+
+if [ $# -lt 1 ]; then
+    usage
+fi
+
+if [ -z "$1" ]; then
+    usage
+fi
+
+projDir=$1
+mkdir -p $projDir
+cd $projDir
+
+gradle init
+
+cat << _EOF_ >> build.gradle
+
+
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+}
+_EOF_
+
+mkdir -p src/main/groovy
+cat << _EOF_ > src/main/groovy/Hello.groovy
+println "Hello Groovy."
+_EOF_
+
+./gradlew idea
+
+echo "done."
+

@@ -14,15 +14,14 @@ if [ -z "$1" ]; then
     usage
 fi
 
+
 projDir=$1
 mkdir -p $projDir
 cd $projDir
 
+
 gradle init
-
 cat << _EOF_ >> build.gradle
-
-
 apply plugin: 'groovy'
 apply plugin: 'idea'
 
@@ -35,12 +34,12 @@ dependencies {
 }
 _EOF_
 
+
 mkdir -p src/main/groovy
 cat << _EOF_ > src/main/groovy/Hello.groovy
 println "Hello Groovy."
 _EOF_
 
 ./gradlew idea
-
 echo "done."
 

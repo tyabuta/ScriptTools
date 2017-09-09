@@ -40,6 +40,21 @@ cat << _EOF_ > src/main/groovy/Hello.groovy
 println "Hello Groovy."
 _EOF_
 
+
 ./gradlew idea
+
+
+cat << _EOF_ > .gitignore
+.gradle/*
+*.iml
+*.ipr
+*.iws
+out/*
+_EOF_
+
+git init
+git add .
+git commit -m "initialize"
+
 echo "done."
 

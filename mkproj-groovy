@@ -2,7 +2,7 @@
 set -u
 
 usage(){
-    echo "groovy-proj-cretae <ProjectName>"
+    echo "mkproj-groovy <ProjectName>"
     exit 1
 }
 
@@ -30,6 +30,7 @@ repositories {
 }
 
 dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.4.12'
     compile 'org.slf4j:slf4j-api:1.7.21'
 }
 _EOF_
@@ -50,6 +51,7 @@ cat << _EOF_ > .gitignore
 *.ipr
 *.iws
 out/*
+build/*
 _EOF_
 
 git init
